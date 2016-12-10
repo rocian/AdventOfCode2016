@@ -78,12 +78,16 @@ code?
 
 """
 
+# keypad for part 1
+# the spaces are indicators for the frontier of keypad
 keypad = ["     ",
           " 123 ",
           " 456 ",
           " 789 ",
           "     "]
 
+# keypad for part 2
+# the spaces are indicator for the frontier of keypad
 keypad2 = ["       ",
            "   1   ",
            "  234  ",
@@ -92,31 +96,44 @@ keypad2 = ["       ",
            "   D   ",
            "       "]
 
+# each moves has a direction (dx,dy)
 moves = {'U': (0, -1), 'D': (0, 1), 'R': (1, 0), 'L': (-1, 0)}
 
 
 def read_input():
+    """ This function read the instruction from the input file and
+    return a clean list of instruction. Each elements of the returned
+    list is one of U,D,L,R i.e. a direction hor or vert on the plane."""
+    
     f = open('input', 'r')
     string = f.read()
-
-    return(string.replace('\n\n', '\n').split("\n"))
+    
+    lstring = string.split("\n")
+    # we remove the last void instruction
+    # this could be made in a safer way
+    lstring = lstring[:-1]
+    
+    return(lstring)
 
 
 def process(x, y, keyp):
+    """Process the instructions starting from the position x,y. On the 
+    keypad keyp."""
     point = []
     for scan in read_input():
-        if scan == "":
-            continue
-
         for c in scan:
+            # for each instruction char get dx, dy
             dx, dy = moves[c]
-
+            # accept moves if it is not on the forntier (space char)
             if keyp[y + dy][x + dx] != " ":
                 x += dx
                 y += dy
-
+        # memorize new position char
         point.append(keyp[y][x])
+    # return final string of char of the walk
     return (''.join(point))
 
+# walk on keypad starting from position 2,2 i.e. char 5
 print("Day 2. Solution of part 1: {}".format(process(2, 2, keypad)))
+# walk on keypad2 starting from position 1,3 i.e. char 5  
 print("Day 2. Solution of part 2: {}".format(process(1, 3, keypad2)))
