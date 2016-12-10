@@ -31,7 +31,7 @@ street grid of the city, how far is the shortest path to the destination?
 For example:
 
     Following R2, L3 leaves you 2 blocks East and 3 blocks North, or 5 blocks away.
-    R2, R2, R2 leaves you 2 blocks due South of your starting position, which is 
+    R2, R2, R2 leaves you 2 blocks due South of your starting position, which is
                2 blocks away.
     R5, L5, R5, R3 leaves you 12 blocks away.
 
@@ -49,41 +49,44 @@ How many blocks away is the first location you visit twice?
 
 """
 
-walk = 0 
+walk = 0
 direction = 1j
 firstcross = None
 points = []
+
 
 def read_input():
     f = open('input', 'r')
     string = f.read()
     f.close()
-    return(string.replace('\n', '').replace(' ','').split(","))
-    
+    return(string.replace('\n', '').replace(' ', '').split(","))
+
 
 # http://bryceboe.com/2006/10/23/line-segment-intersection-algorithm/
-def ccw(A,B,C):
-    return (C.imag-A.imag) * (B.real-A.real) > (B.imag-A.imag) * (C.real-A.real)
+def ccw(A, B, C):
+    return (C.imag - A.imag) * (B.real - A.real) > (B.imag - A.imag) * (C.real - A.real)
+
 
 # Return true if line segments AB and CD intersect
-def intersect(A,B,C,D):
-    return ccw(A,C,D) != ccw(B,C,D) and ccw(A,B,C) != ccw(A,B,D)
+def intersect(A, B, C, D):
+    return ccw(A, C, D) != ccw(B, C, D) and ccw(A, B, C) != ccw(A, B, D)
+
 
 def iscrossing(a, b, direc, poin):
-    if ( len(poin) < 3 ):
+    if (len(poin) < 3):
         return(None)
 
-    for i in range(0,len(poin)-2):
+    for i in range(0, len(poin) - 2):
         z1 = poin[i]
-        z2 = poin[i+1]
+        z2 = poin[i + 1]
 
         if intersect(a, b, z1, z2):
             if a.real == b.real:
-                intersection = a.real + z1.imag*1j
+                intersection = a.real + z1.imag * 1j
             else:
-                intersection = z1.real + a.imag*1j
+                intersection = z1.real + a.imag * 1j
             return (intersection)
-        
+
     return(None)
 
 
@@ -95,16 +98,15 @@ for i in instruction:
         mult = -1j
     else:
         mult = 1j
-    direction *=  mult
+        direction *= mult
 
     oldwalk = walk
-    walk += direction*int(i[1:])
-    
+    walk += direction * int(i[1:])
+
     if firstcross is None:
         firstcross = iscrossing(oldwalk, walk, direction, points)
 
     points.append(walk)
-        
+
 print("Day 1. Solution of part 1: {}".format(int(abs(walk.real) + abs(walk.imag))))
-# print("\n")
 print("Day 1. Solution of part 2: {}".format(int(abs(firstcross.real) + abs(firstcross.imag))))
