@@ -43,6 +43,7 @@ triangles are possible?
 
 
 def read_input():
+    "Read all rows of input file as tuple of three numbers."
     f = open('input', 'r')
     alltern = [line.strip().split() for line in f]
     f.close()
@@ -50,6 +51,7 @@ def read_input():
 
 
 def process(tern):
+    "Return the number of rows that can be interpreted three side of a triangle"
     num = 0
     for a, b, c in tern:
         a = int(a)
@@ -61,15 +63,19 @@ def process(tern):
 
 
 def quasitranspose(l):
+    "Transpose the tuple of three number. And stack them again in group of three."
     t = []
     for i in zip(*l):
         for k in range(0, len(i), 3):
             t.append(list(i)[k:k + 3])
     return(t)
 
-
+# list of numbers
 l = read_input()
+# list of numbers transposed
 t = quasitranspose(l)
 
+# Number of triangle by rows
 print("Day 3. Solution of part 1: {}".format(process(l)))
+# Number of triangle by columns
 print("Day 3. Solution of part 2: {}".format(process(t)))
