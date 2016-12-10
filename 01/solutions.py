@@ -80,7 +80,7 @@ def read_input():
     return(string.replace('\n', '').replace(' ', '').split(","))
 
 
-# The following two function resolve a general problem on the intersection
+# To following two function resolve a general problem on the intersection
 # of two segments.
 # The actual problem is simpler and this approach may be too general.
 # Anyway it doesn't cost too much in terms of computation and we
