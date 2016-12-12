@@ -77,10 +77,10 @@ def opappend(lis, value):
 
 
 def dooperation(otype, params, sbot, sobin, num1, num2, nubot, doing_op):
-    "Do operation otype with `params` using bot `sbot` and output `sobin`.
+    """Do operation otype with `params` using bot `sbot` and output `sobin`
     If a bot compare the two values `num1` and `num2` save the bot index in
     nubot. If no operation is done leave doing_op unchanged.
-    Return (doing_op, nubot)."
+    Return (doing_op, nubot)."""
 
     if otype.startswith("input"):
         # operation of type input
