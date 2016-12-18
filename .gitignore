@@ -66,6 +66,9 @@ docs/_build/
 # Old src
 old/
 
+# evolution src
+evolution/
+
 # PyBuilder
 target/
 
