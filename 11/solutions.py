@@ -603,21 +603,34 @@ p2stop_map = "\n".join([' E OG OM TG TM PG PM RG RM CG CM EG EM LG LM ',
 # of each floor divided by 3 - 1 (the space occupied by the elevator)
 n = len(p1start_map.split("\n")[0]) // 3 - 1
 m = len(p1start_map.split("\n"))
+
+# obtain reduced map
 start_map, stop_map, count = remove_max_coupled(p1start_map, p1stop_map, 8, n, m)
 n = n - 2 * count
 
+# calculate the steps to solve the reduced puzzle
 reducedlenght = solve(start_map, stop_map, n, m)
+
+# calculate the steps for the additional puzzle
+n = len(astart_map.split("\n")[0]) // 3 - 1
+m = len(astart_map.split("\n"))
 additional = solve(astart_map, astop_map, n, m)
+
+# and ... the steps to solve the entire puzzle
 puzzle_one = reducedlenght + count * additional
 
 # SECOND PART
 
+# create a new reduction
 n = len(p2start_map.split("\n")[0]) // 3 - 1
 m = len(p1start_map.split("\n"))
 start_map, stop_map, count = remove_max_coupled(p2start_map, p2stop_map, 12, n, m)
 n = n - 2 * count
 
+#obtain the steps needed to solv the reduced puzzle
 reducedlenght = solve(start_map, stop_map, n, m)
+
+# and ... obtain the steps to solve the entire puzzle
 puzzle_two = reducedlenght + count * additional
 
 print("Day 11. Solution of part 1: {}".format(puzzle_one))
