@@ -109,11 +109,10 @@ def dooperation(otype, params, sbot, sobin, num1, num2, nubot, doing_op):
         if (len(sbot[int(bot)])) < 2:
             # if bot has less than 2 items do noting
             return(doing_op, nubot)
-        
-        
+
         if (num1 in sbot[int(bot)]) & (num2 in sbot[int(bot)]):
             nubot = int(bot)
-            
+
         if int(sbot[int(bot)][0]) <= int(sbot[int(bot)][1]):
             opappend(lout[int(ilow)], sbot[int(bot)][0])
             opappend(hout[int(ihigh)], sbot[int(bot)][1])
@@ -152,7 +151,7 @@ def process(instruction, num1, num2):
             if operation.startswith("value") & first_pass:
                 matres = re.findall(inbin, operation)[0]
                 doing_op, nubot = dooperation("input", matres, sbot, sobin, num1, num2, nubot, doing_op)
-                
+
             elif operation.startswith("bot"):
                 matres = re.findall(botop, operation)[0]
                 doing_op, nubot = dooperation("bot", matres, sbot, sobin, num1, num2, nubot, doing_op)
@@ -161,7 +160,7 @@ def process(instruction, num1, num2):
             doing_op = True
     # return which bot perform confront of num1 and num2 and the multiplied contents
     # of the first 3 value in the output
-    return(nubot,sobin[0][0] * sobin[1][0] * sobin[2][0])
+    return(nubot, sobin[0][0] * sobin[1][0] * sobin[2][0])
 
 
 micro1 = 17

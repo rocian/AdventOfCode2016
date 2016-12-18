@@ -75,42 +75,43 @@ def wall_design(x, y, odfavorite, XYmax):
     position (x, y) of the map. Each position outside map is seen as wall.
 
     """
-    
-    if (x < 0) or (y < 0) or (x>XYmax) or (y>XYmax):
+
+    if (x < 0) or (y < 0) or (x > XYmax) or (y > XYmax):
         return('#')
-    
+
     wall = ['.', '#']
-    temp = x*x + 3*x + 2*x*y + y + y*y + odfavorite
+    temp = x * x + 3 * x + 2 * x * y + y + y * y + odfavorite
     binary = list(bin(temp)[2:])
     ones = binary.count('1') % 2
     return(wall[ones])
 
+
 def get_walls(XYmax, odfavorite):
     "Print map of walls and spaces."
-    
+
     row = ""
-    for y in range(0,XYmax):
-        for x in range(0,XYmax):
-            row += wall_design(x,y,odfavorite,XYmax)
+    for y in range(0, XYmax):
+        for x in range(0, XYmax):
+            row += wall_design(x, y, odfavorite, XYmax)
         row += "\n"
-    return(row) 
+    return(row)
 
 
-# breath depth  
+# breath depth
 def bfs_paths(graph, start, goal):
     queue = [(start, [start])]
     while queue:
-        
+
         (vertex, path) = queue.pop(0)
         for next in graph[vertex] - set(path):
             if next == goal:
                 yield path + [next]
-                
+
             else:
                 queue.append((next, path + [next]))
 
 
-# breath depth  
+# breath depth
 def maxlen_paths(graph, start, maxlen):
     queue = [(start, [start])]
 
@@ -118,73 +119,63 @@ def maxlen_paths(graph, start, maxlen):
         (vertex, path) = queue.pop(0)
         if len(graph[vertex] - set(path)) != 0:
             for next in graph[vertex] - set(path):
-                if len(path) >= (maxlen -1):
+                if len(path) >= (maxlen - 1):
                     yield path + [next]
-                    
+
                 else:
                     queue.append((next, path + [next]))
-        
+
         else:
             yield path
 
-    
+
 def shortest_path(graph, start, goal):
-    
+
     try:
         return next(bfs_paths(graph, start, goal))
     except StopIteration:
         return None
 
 
-
 def generate_graph(XYmax, odfavorite):
     graph = {}
-    for x in range(0,XYmax):
-        for y in range(0,XYmax):
-            
+    for x in range(0, XYmax):
+        for y in range(0, XYmax):
+
             up = wall_design(x, y - 1, odfavorite, XYmax)
             do = wall_design(x, y + 1, odfavorite, XYmax)
             le = wall_design(x - 1, y, odfavorite, XYmax)
             ri = wall_design(x + 1, y, odfavorite, XYmax)
-        
-            if (x,y) in graph.keys():
-                graph[(x,y)].add(row[1])
-                
-            else:
-                graph[(x,y)] = set()
+
+            graph[(x, y)] = set()
 
             if up != '#':
-                graph[(x,y)].add((x,y-1))
-                
+                graph[(x, y)].add((x, y - 1))
+
             if do != '#':
-                graph[(x,y)].add((x,y+1))
-                
+                graph[(x, y)].add((x, y + 1))
+
             if le != '#':
-                graph[(x,y)].add((x-1,y))
-                
+                graph[(x, y)].add((x - 1, y))
+
             if ri != '#':
-                graph[(x,y)].add((x+1,y))
+                graph[(x, y)].add((x + 1, y))
 
     return(graph)
 
 
-graph = generate_graph(170,1358)
-shortest = shortest_path(graph, (1,1), (31,39))
-l1 = len(shortest)-1
+graph = generate_graph(170, 1358)
+shortest = shortest_path(graph, (1, 1), (31, 39))
+l1 = len(shortest) - 1
 
-
-    
-graph = generate_graph(53,1358)
-paths = maxlen_paths(graph, (1,1),51)
+graph = generate_graph(53, 1358)
+paths = maxlen_paths(graph, (1, 1), 51)
 all = set()
 for p in paths:
     for i in p:
         all.add(i)
-        
+
 l2 = len(all)
-
-
 
 print("Day 13. Solution of part 1: {}".format(l1))
 print("Day 13. Solution of part 2: {}".format(l2))
-

@@ -72,9 +72,11 @@ import hashlib
 
 ststring = "ojvtpuvg"
 
+
 def md5_input(s):
     "MD5 of string s, hex lowercase output."
     return(hashlib.md5(s.encode('utf-8')).hexdigest())
+
 
 def get_password(s):
     "Return password as requested by part 1 method."
@@ -85,33 +87,33 @@ def get_password(s):
         md5 = md5_input(s + str(index))
         if md5[0:5] == "00000":
             password.append(md5[5])
-            finished +=1
+            finished += 1
         index += 1
 
     return "".join(password)
+
 
 def get_password2(s):
     "Return password as requested by part 2 method."
     finished = 0
     index = 0
-    password = list('_'*8)
+    password = list('_' * 8)
     verstring = list('01234567')
     while finished < 8:
         md5 = md5_input(s + str(index))
         if md5[0:5] == "00000":
             position = md5[5]
-            
+
             if position in verstring:
                 password[int(position)] = md5[6]
                 verstring.remove(position)
-                finished +=1
-                
+                finished += 1
+
         index += 1
 
     return "".join(password)
 
 # Password from hashing of input method 1
 print("Day 5. Solution of part 1: {}".format(get_password(ststring)))
-# Password from hashing of input method 2 
+# Password from hashing of input method 2
 print("Day 5. Solution of part 2: {}".format(get_password2(ststring)))
-

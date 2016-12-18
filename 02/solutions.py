@@ -104,20 +104,20 @@ def read_input():
     """ This function read the instruction from the input file and
     return a clean list of instruction. Each elements of the returned
     list is one of U,D,L,R i.e. a direction hor or vert on the plane."""
-    
+
     f = open('input', 'r')
     string = f.read()
-    
+
     lstring = string.split("\n")
     # we remove the last void instruction
     # this could be made in a safer way
     lstring = lstring[:-1]
-    
+
     return(lstring)
 
 
 def process(x, y, keyp):
-    """Process the instructions starting from the position x,y. On the 
+    """Process the instructions starting from the position x,y. On the
     keypad keyp."""
     point = []
     for scan in read_input():
@@ -135,5 +135,5 @@ def process(x, y, keyp):
 
 # walk on keypad starting from position 2,2 i.e. char 5
 print("Day 2. Solution of part 1: {}".format(process(2, 2, keypad)))
-# walk on keypad2 starting from position 1,3 i.e. char 5  
+# walk on keypad2 starting from position 1,3 i.e. char 5
 print("Day 2. Solution of part 2: {}".format(process(1, 3, keypad2)))

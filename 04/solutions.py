@@ -56,6 +56,7 @@ from collections import Counter
 # list of letters
 alphabet = list('abcdefghijklmnopqrstuvwxyz')
 
+
 def read_input():
     "Read all rows as a list of encrypted rooms."
     f = open('input', 'r')
@@ -69,7 +70,7 @@ def read_input():
 def count_real_room(l):
     """Return number of real rooms and the id of the room containing the word north."""
     count = 0
-    room = -1
+    roomn = -1
     for room in l:
         mrx = re.search(r"^(\D+)-(\d+)\[(.*)\]", room)
 
@@ -91,10 +92,10 @@ def count_real_room(l):
 
         # sort the char that compose the coded name by frequency
         # c*1000-ord is a unique key used for sort
-        fiver = [(a, c*1000-ord(a)) for a, c in Counter(coded).most_common()]
+        fiver = [(a, c * 1000 - ord(a)) for a, c in Counter(coded).most_common()]
         fiver = sorted(fiver, key=lambda count: count[1], reverse=True)
         # get only the first five
-        fiver = [a for a,c in fiver][0:5]
+        fiver = [a for a, c in fiver][0:5]
         fiver = ''.join(fiver)
 
         # if the room name is valid
@@ -106,7 +107,7 @@ def count_real_room(l):
                 wl = list(word)
                 for c in wl:
                     # for each char use decode by rotation
-                    index = wl.index(c)
+                    # index = wl.index(c)
                     nindex = alphabet.index(c)
                     nindex = (nindex + room_id) % (len(alphabet))
                     # and add the decoded char to the new list
@@ -117,9 +118,9 @@ def count_real_room(l):
             # if the decoded name contains north
             # we have found the room where
             # "North Pole objects are stored"
-            if 'north' in nwl.split(' ')[0]:
-                room = room_id 
-    return(count,room)
+            if 'north' in nwl:
+                roomn = room_id
+    return(count, roomn)
 
 l = read_input()
 
