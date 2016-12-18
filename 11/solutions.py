@@ -60,9 +60,9 @@ Lithium, M for Microchip, and G for Generator), the initial state looks like
 this:
 
 F4 .  .  .  .  .
-F3 .  .  .  LG .   01000
-F2 .  HG .  .  .   00010
-F1 E  .  HM .  LM  10101 8277
+F3 .  .  .  LG .  
+F2 .  HG .  .  .  
+F1 E  .  HM .  LM 
 
 Then, to get everything up to the assembling machine on the fourth floor, the
 following steps could be taken:
@@ -152,10 +152,10 @@ following steps could be taken:
 
     Bring both Microchips to the fourth floor:
 
-    F4 E  HG HM LG LM  11111
-    F3 .  .  .  .  .   00000
-    F2 .  .  .  .  .   00000
-    F1 .  .  .  .  .   00000 1015808
+    F4 E  HG HM LG LM 
+    F3 .  .  .  .  .  
+    F2 .  .  .  .  .  
+    F1 .  .  .  .  .  
 
 In this arrangement, it takes 11 steps to collect all of the objects at the
 fourth floor for assembly. (Each elevator stop counts as one step, even if
