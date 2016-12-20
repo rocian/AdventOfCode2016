@@ -59,20 +59,20 @@ For example, with five Elves (again numbered 1 to 5):
 
     Elf 2 steals from the Elf directly across the circle, Elf 5:
 
-      1         1 
+      1         1
     -   2  -->     2
-      4         4 
+      4         4
 
     Next is Elf 4 who, choosing between Elves 1 and 2, steals from Elf 1:
 
-     -          2  
+     -          2
         2  -->
      4          4
 
     Finally, Elf 2 steals from Elf 4:
 
      2
-        -->  2  
+        -->  2
      -
 
 So, with five Elves, the Elf that sits starting in position 2 gets all the presents.
@@ -86,9 +86,7 @@ Your puzzle input is still 3005290.
 start = 3005290
 
 # For part 1
-c = [1] * start
-for i in range(start):
-    c[i] = i+1
+c = list(range(1, start + 1))
 
 while len(c) > 1:
     while (len(c) % 2 == 0) and (len(c) > 1):
@@ -102,20 +100,25 @@ while len(c) > 1:
 
 
 # For part 2
-d = [1] * start
-for i in range(start):
-    d[i] = i+1
+d = list(range(1, start + 1))
 
-i = 0
 while len(d) > 1:
-    next = (i + (len(d) // 2)) % len(d)
-    _ = d.pop(next)
-    if next > i:
-        i = (i + 1) 
-    i = i % len(d)            
+    while (len(d) % 2 == 0) and (len(d) > 2):
+        a = d[len(d) // 2 + 2::3]
+        k = (d.index(a[-1]) + 3) % len(d)
+        b = d[k:len(d) // 2 + 2:3]
+        d = b + a
+
+    while (len(d) % 2 == 1) and (len(d) > 2):
+        a = d[len(d) // 2 + 1::3]
+        k = (d.index(a[-1]) + 3) % len(d)
+        b = d[k:len(d) // 2 + 1:3]
+        d = b + a
+
+    if len(d) == 2:
+        _ = d.pop(1)
 
 # d[0] contains the solution of part 2
 
 print("Day 19. Solution of part 1: {}".format(c[0]))
 print("Day 19. Solution of part 2: {}".format(d[0]))
-
