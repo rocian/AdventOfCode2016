@@ -49,13 +49,16 @@ How many blocks away is the first location you visit twice?
 
 """
 
+from sys import stdin
+
 # complex variable containing the point where you are
 # as if you where in a complex world.
 # Obviously your first position is the origin of the complex plane (0,0j) i.e. 0
-walk = 0
-
 # As requested you start are facing north i.e. 1j direction
 direction = 1j
+
+# and you have not yet walked
+walk = 0
 
 # In the second part we need to store the first time we cross our walk. Before
 # calculating it, it is None
@@ -66,18 +69,15 @@ firstcross = None
 points = []
 
 
-def read_input():
+def read_input():  # fname):
     """ This function read the instruction from the input file and
     return a clean list of instruction. Each elements of the returned
     list is of the form Dn, where D is one of L,R (turn left right) and
     n is the number of block to walk."""
 
-    f = open('input', 'r')
-    string = f.read()
-    f.close()
-
     # we need to remove space and carriage return to clean the input list
-    return(string.replace('\n', '').replace(' ', '').split(","))
+    instructions = stdin.read().strip().replace(' ', '').split(",")
+    return(instructions)
 
 
 # The following two function resolve a general problem on the intersection
@@ -106,9 +106,10 @@ def iscrossing(a, b, poin):
     previous segments of the walk (vertex of walk are in the list poin).
     It returns None if there were non intersection."""
 
-    # if there are not enough points it is impossible that we can have
-    # an intersection
-    # (even if returning back on our own step could be interpreted as an intersection)
+    # if there are not enough points it is impossible that we can have an
+    # intersection (even if returning back on our own step could be interpreted
+    # as an intersection, but we can turn only R or L so we need at least 3
+    # turns to intersect our own walk).
     if (len(poin) < 3):
         return(None)
 
@@ -128,6 +129,7 @@ def iscrossing(a, b, poin):
             else:
                 # or last segment is vertical (and its counterpart horizontal)
                 intersection = z1.real + a.imag * 1j
+
             return (intersection)
 
     return(None)
@@ -135,29 +137,25 @@ def iscrossing(a, b, poin):
 # we read all instruction and place them in a list
 instruction = read_input()
 
+# left is a ccw turn, i.e. a multiplication by -j
+# right is a cw turn, i.e. a multiplication by j
+turn = {'L': -1j, 'R': 1j}
+
 for i in instruction:
-    # turn instruction is the first char
-    turn = i[0]
-    if turn == 'L':
-        # left is a ccw turn, i.e. a multiplication by -j
-        mult = -1j
-    else:
-        # right is a cw turn, i.e. a multiplication by j
-        mult = 1j
-        # the new direction is a multiplication of the new
-        # turn direction with the old one
-    direction *= mult
+
+    direction *= turn[i[0]]
 
     # we need to preserve the old point to calculate the last segment
     # of walk
-    oldwalk = walk
+
+    oldpoint = walk
     # then we reach a new point
     walk += direction * int(i[1:])
 
     # if we have already calculated the first intersection we don't need
     # to calculate the new ones.
     if firstcross is None:
-        firstcross = iscrossing(oldwalk, walk, points)
+        firstcross = iscrossing(oldpoint, walk, points)
 
     # anyway we store in the points list the new vertex of our walk
     points.append(walk)
