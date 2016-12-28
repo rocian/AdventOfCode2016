@@ -110,13 +110,6 @@ def read_input():
 
 
 def opchange(instruction, pc, a):
-    # print("----")
-    # if (pc + a) < len(instruction):
-    #     print(instruction[pc+a])
-    # else:
-    #     print(pc)
-    # print(a)
-    # print("++++")
     npc = pc + a
     try:
         opv = instruction[npc].split(" ")
@@ -149,11 +142,6 @@ def process(instruction, r={}):
 
         operation = instruction[register['pc']]
 
-        # if s > 1500000:
-        #     print("{:05d} --- {} --- {}".format(register['pc'], operation, register))
-        #     s = 0
-        # s += 1
-        
         opcode, *op = operation.split(" ")
                     
         if op[0] in register.keys():
