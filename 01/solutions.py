@@ -146,7 +146,7 @@ for i in instruction:
         mult = 1j
         # the new direction is a multiplication of the new
         # turn direction with the old one
-        direction *= mult
+    direction *= mult
 
     # we need to preserve the old point to calculate the last segment
     # of walk
