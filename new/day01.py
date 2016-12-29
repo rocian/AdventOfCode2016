@@ -98,39 +98,51 @@ def ccw(A, B, C):
 
 def intersect(A, B, C, D):
     """ Return true if line segments AB and CD intersect """
+    #
+    #   (1)                  (2)
+    #
+    #    D                    D
+    #    |                    |
+    # A--+--B    or   A-----B |
+    #    |                    |
+    #    C                    C
+    #
+    # In the first case (the two segments intersect) the two couple of
+    # three-points ([ACD,BCD] and [ABC,ABD]) have not the same sign of
+    # orientation, one is ccw the other is not. In the second case (the two
+    # segments doesn't have intersection), the couple of three points has the
+    # same sign of orientation. Notice that all the possible cases can be
+    # obtained for simmetry by exchanging the segment vertex.
     return ccw(A, C, D) != ccw(B, C, D) and ccw(A, B, C) != ccw(A, B, D)
 
 
-def iscrossing(a, b, poin):
+def iscrossing(A, B, points):
     """This function returns the point of intersection of the segment ab with
-    previous segments of the walk (vertex of walk are in the list poin).
+    previous segments of the walk (vertex of walk are in the list points).
     It returns None if there were non intersection."""
 
     # if there are not enough points it is impossible that we can have an
     # intersection (even if returning back on our own step could be interpreted
     # as an intersection, but we can turn only R or L so we need at least 3
     # turns to intersect our own walk).
-    if (len(poin) < 3):
+    if (len(points) < 3):
         return(None)
 
     # for each segment of our walk we check for an intersection
     # This seems very intensive as computation, but we can trust
     # the puzzle introduction, that says that the intersection happens
     # early in our walk.
-    for i in range(0, len(poin) - 2):
-        z1 = poin[i]
-        z2 = poin[i + 1]
+    segments = [(points[i], points[i + 1]) for i in range(len(points) - 2)]
+    for C, D in segments:
+        if intersect(A, B, C, D):
 
-        if intersect(a, b, z1, z2):
-            # if the segment intersects, then
-            if a.real == b.real:
-                # or last segment is horizontal (and its counterpart vertical)
-                intersection = a.real + z1.imag * 1j
-            else:
-                # or last segment is vertical (and its counterpart horizontal)
-                intersection = z1.real + a.imag * 1j
+            # (not (xa - xb) * xa)  is  xa if xa == xb
+            cross = ((not (A.real - B.real)) * A.real +
+                     (not (A.imag - B.imag)) * A.imag +
+                     (not (C.real - D.real)) * C.real +
+                     (not (C.imag - D.imag)) * C.imag)
 
-            return (intersection)
+            return (cross)
 
     return(None)
 
@@ -143,12 +155,13 @@ turn = {'L': -1j, 'R': 1j}
 
 for i in instruction:
 
+    # calculate the new direction
     direction *= turn[i[0]]
 
     # we need to preserve the old point to calculate the last segment
     # of walk
-
     oldpoint = walk
+
     # then we reach a new point
     walk += direction * int(i[1:])
 
